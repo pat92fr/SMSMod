@@ -7,4 +7,4 @@ This projet is a tiny control board for micro servo. It replaces the genuine ser
 
 Commercial off-the-shelf smart 3-pin cables, hubs, accessories and physical interface adapter boards (e.g. TTLinker) may be used to connect the hacked servo to the host controller (Arduino board, Arm-based board, RPi, and Jetson). User can drive up to 254 servo, with the same bus.
 
-Position, velocity, and torque of each servo is controlable. Present position, velocity, and torque feedback is avaible. Communication protocol is developed for Python and C/C++ Arduino. Ping, read, write, sync write, reboot, factory reset commands are supported.
+Position, velocity, and torque of each servo are controlable. Present position, velocity, and torque feedback are avaible. Communication protocol is developed for Python and C/C++ Arduino. Ping, read, write, sync write, reboot, factory reset commands are supported. One command takes about 1ms to be processed with a return status.
