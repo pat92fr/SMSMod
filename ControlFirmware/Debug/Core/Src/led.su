@@ -1,0 +1,8 @@
+led.c:22:6:stop_blinking	16	static
+led.c:32:6:HAL_Led_Init	16	static
+led.c:43:6:HAL_Led_Process	16	static
+led.c:77:6:HAL_Led_Set	16	static
+led.c:83:6:HAL_Led_Reset	16	static
+led.c:89:6:HAL_Led_Toggle	16	static
+led.c:98:5:HAL_Led_Get	16	static
+led.c:106:6:HAL_Led_Blink	24	static

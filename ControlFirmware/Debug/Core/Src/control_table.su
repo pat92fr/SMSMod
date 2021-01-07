@@ -1,0 +1,4 @@
+control_table.c:16:6:factory_reset_eeprom_regs	8	static
+control_table.c:82:6:load_eeprom_regs	8	static
+control_table.c:87:6:store_eeprom_regs	8	static
+control_table.c:92:6:reset_ram_regs	4	static

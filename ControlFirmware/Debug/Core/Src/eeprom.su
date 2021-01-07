@@ -1,0 +1,4 @@
+eeprom.c:14:17:eeprom_base_address	4	static
+eeprom.c:19:6:eeprom_empty	4	static
+eeprom.c:24:19:eeprom_restore	16	static
+eeprom.c:30:19:eeprom_store	64	static

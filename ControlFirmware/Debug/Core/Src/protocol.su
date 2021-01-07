@@ -1,0 +1,4 @@
+protocol.c:15:10:updateCRC	24	static
+protocol.c:88:6:packet_encapsulate	24	static
+protocol.c:125:6:instruction_handler	56	static
+protocol.c:277:6:packet_handler	24	static

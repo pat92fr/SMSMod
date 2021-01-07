@@ -1,0 +1,197 @@
+/*
+ * control_table.h
+ *
+ *  Created on: 26 sept. 2020
+ *      Author: patrick
+ */
+
+#ifndef INC_CONTROL_TABLE_H_
+#define INC_CONTROL_TABLE_H_
+
+#include "stm32g4xx_hal.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// REGISTER ADDRESS ///////////////////////////////////////////////////////////
+
+// EEPROM
+#define REG_MODEL_NUMBER_L 		0x00
+#define REG_MODEL_NUMBER_H 		0x01
+#define REG_VERSION		 		0x02
+#define REG_ID             		0x03
+#define REG_BAUD_RATE      		0x04
+#define REG_RETURN_DELAY   		0x05
+
+#define REG_MIN_POSITION_DEG_L		0x10
+#define REG_MIN_POSITION_DEG_H		0x11
+#define REG_MAX_POSITION_DEG_L		0x12
+#define REG_MAX_POSITION_DEG_H		0x13
+#define REG_MAX_VELOCITY_DPS_L		0x14
+#define REG_MAX_VELOCITY_DPS_H		0x15
+#define REG_MAX_ACCELERATION_DPSS_L	0x16
+#define REG_MAX_ACCELERATION_DPSS_H	0x17
+#define REG_MAX_CURRENT_MA_L		0x18
+#define REG_MAX_CURRENT_MA_H		0x19
+#define REG_MAX_PWM_100_L			0x1A
+#define REG_MAX_PWM_100_H			0x1B
+#define REG_TEMPERATURE_LIMIT		0x1C
+#define REG_LOW_VOLTAGE_LIMIT		0x1D
+#define REG_HIGH_VOLTAGE_LIMIT		0x1E
+
+#define REG_MOVING_THRESHOLD_DPS	0x1F
+#define REG_STATUS_RETURN_LVL		0x20
+#define REG_ALARM_LED				0x21
+#define REG_ALARM_SHUTDOWN			0x22
+
+#define REG_MIN_POSITION_ADC_L		0x23
+#define REG_MIN_POSITION_ADC_H		0x24
+#define REG_MAX_POSITION_ADC_L		0x25
+#define REG_MAX_POSITION_ADC_H		0x26
+#define REG_MAX_ROTATION_DEG		0x27
+#define REG_INV_ROTATION_MOTOR		0x28
+#define REG_INV_ROTATION_SENSOR 	0x29
+
+#define REG_PID_POSITION_KP_L		0x2A
+#define REG_PID_POSITION_KP_H		0x2B
+#define REG_PID_POSITION_KI_L		0x2C
+#define REG_PID_POSITION_KI_H		0x2D
+#define REG_PID_POSITION_KD_L		0x2E
+#define REG_PID_POSITION_KD_H		0x2F
+#define REG_PID_VELOCITY_KFF_L		0x30
+#define REG_PID_VELOCITY_KFF_H		0x31
+#define REG_PID_ACCELERATION_KFF_L	0x32
+#define REG_PID_ACCELERATION_KFF_H	0x33
+#define REG_PID_CURRENT_KP_L		0x34
+#define REG_PID_CURRENT_KP_H		0x35
+#define REG_PID_CURRENT_KI_L		0x36
+#define REG_PID_CURRENT_KI_H		0x37
+#define REG_PID_CURRENT_KFF_L		0x38
+#define REG_PID_CURRENT_KFF_H		0x39
+
+#define REG_CAL_CURRENT_SENSE_A_L	0x3A
+#define REG_CAL_CURRENT_SENSE_A_H	0x3B
+#define REG_CAL_CURRENT_SENSE_B_L	0x3C
+#define REG_CAL_CURRENT_SENSE_B_H	0x3D
+
+
+// RAM
+#define REG_TORQUE_ENABLE  			0x40
+#define REG_LED			  			0x41
+#define REG_CONTROL_MODE			0x42
+#define REG_GOAL_POSITION_DEG_L		0x43
+#define REG_GOAL_POSITION_DEG_H		0x44
+#define REG_GOAL_VELOCITY_DPS_L		0x45
+#define REG_GOAL_VELOCITY_DPS_H		0x46
+#define REG_GOAL_CURRENT_MA_L		0x47
+#define REG_GOAL_CURRENT_MA_H		0x48
+#define REG_GOAL_PWM_100_L			0x49
+#define REG_GOAL_PWM_100_H			0x4A
+#define REG_RESERVED_RAM_1			0x4B
+#define REG_RESERVED_RAM_2			0x4C
+#define REG_PRESENT_POSITION_DEG_L	0x4D
+#define REG_PRESENT_POSITION_DEG_H	0x4E
+#define REG_PRESENT_VELOCITY_DPS_L	0x4F
+#define REG_PRESENT_VELOCITY_DPS_H	0x50
+#define REG_PRESENT_CURRENT_MA_L	0x51
+#define REG_PRESENT_CURRENT_MA_H	0x52
+#define REG_PRESENT_VOLTAGE			0x53
+#define REG_PRESENT_TEMPERATURE 	0x54
+#define REG_MOVING			 		0x55
+// DEBUG RAM
+#define REG_SETPOINT_POSITION_DEG_L	0x56
+#define REG_SETPOINT_POSITION_DEG_H	0x57
+#define REG_SETPOINT_VELOCITY_DPS_L	0x58
+#define REG_SETPOINT_VELOCITY_DPS_H	0x59
+#define REG_SETPOINT_CURRENT_MA_L	0x5A
+#define REG_SETPOINT_CURRENT_MA_H	0x5B
+#define REG_SETPOINT_PWM_100_L		0x5C
+#define REG_SETPOINT_PWM_100_H		0x5D
+#define POSITION_INPUT_ADC_L		0x5E
+#define POSITION_INPUT_ADC_H		0x5F
+#define CURRENT_INPUT_ADC_L			0x60
+#define CURRENT_INPUT_ADC_H			0x61
+#define PRESENT_CURRENT_ON_L		0x62
+#define PRESENT_CURRENT_ON_H		0x63
+#define PRESENT_CURRENT_OFF_L		0x64
+#define PRESENT_CURRENT_OFF_H		0x65
+#define REG_EST_CURRENT_SENSE_B_L	0x66
+#define REG_EST_CURRENT_SENSE_B_H	0x67
+// SW & HW ERROR
+#define REG_PROTOCOL_CRC_FAIL 		0x80
+#define REG_HARDWARE_ERROR_STATUS 	0x81
+
+#define REG_MAX             		0x82
+
+
+// REGISTER FACTORY DEFAULT VALUES ////////////////////////////////////////////
+
+#define REG_MODEL_NUMBER_VALUE 				92
+#define REG_VERSION_VALUE 					0
+#define REG_ID_VALUE 						1
+#define REG_BAUD_RATE_VALUE 				3		// 1: 1Mbps
+#define REG_RETURN_DELAY_VALUE 				0		// 0: zero delay
+
+#define REG_MIN_POSITION_DEG_VALUE 			30		// deg 0° (0..360)
+#define REG_MAX_POSITION_DEG_VALUE 			150		// deg 180° (0..360)
+#define REG_MAX_VELOCITY_DPS_VALUE			800		// dps
+#define REG_MAX_ACCELERATION_DPSS_VALUE		8000	// 12000 dpss
+#define REG_MAX_CURRENT_MA_VALUE			250		// mA
+#define REG_MAX_PWM_100_VALUE				50		// 0..99
+#define REG_TEMPERATURE_LIMIT_VALUE		 	60		// °C
+#define REG_LOW_VOLTAGE_LIMIT_VALUE		 	45		// 100mV
+#define REG_HIGH_VOLTAGE_LIMIT_VALUE		95		// 100mV
+
+#define REG_MOVING_THRESHOLD_DPS_VALUE		5		// dps
+#define REG_STATUS_RETURN_LVL_VALUE			2		// TODO : fill comment
+#define REG_ALARM_LED_VALUE					36		// TODO : fill comment
+#define REG_ALARM_SHUTDOWN_VALUE			36		// TODO : fill comment
+
+#define REG_MIN_POSITION_ADC_VALUE			50		// 0..4095
+#define REG_MAX_POSITION_ADC_VALUE			3950	// 0..4095
+#define REG_MAX_ROTATION_DEG_VALUE			180		// deg
+#define REG_INV_ROTATION_MOTOR_VALUE		0		// 0: NORMAL 1: INV
+#define REG_INV_ROTATION_SENSOR_VALUE		0		// 0: NORMAL 1: INV
+
+#define REG_PID_POSITION_KP_VALUE			2000	// k 400 (0), 1400-2000 (1)
+#define REG_PID_POSITION_KI_VALUE			40		// k 20 (0), 40 (1)
+#define REG_PID_POSITION_KD_VALUE			2000	// k 400 (0), 2000-4000 (1)
+#define REG_PID_VELOCITY_KFF_VALUE			0		// k 0
+#define REG_PID_ACCELERATION_KFF_VALUE		0		// k 0
+#define REG_PID_CURRENT_KP_VALUE			1000		// 110-250 > 1000 (1,3)
+#define REG_PID_CURRENT_KI_VALUE			1		// 30-50 > 1 (1,3)
+#define REG_PID_CURRENT_KFF_VALUE			10		// 10 (1,3)
+
+#define REG_CAL_CURRENT_SENSE_A_L_VALUE		1920	// 1872 (theorique)
+#define REG_CAL_CURRENT_SENSE_B_L_VALUE		1205
+
+// REGISTER CONTROL MODE VALUES //////////////////////////////////////////////////////
+
+#define REG_CONTROL_MODE_POSITION 0
+#define REG_CONTROL_MODE_POSITION_TORQUE 1
+#define REG_CONTROL_MODE_POSITION_PROFIL 2
+#define REG_CONTROL_MODE_CURRENT 3
+#define REG_CONTROL_MODE_PWM 4
+
+// REGISTER ERROR VALUES //////////////////////////////////////////////////////
+
+#define HW_ERROR_BIT_VOLTAGE 0
+#define HW_ERROR_BIT_POSITION_SENSOR_ERROR 2
+#define HW_ERROR_BIT_OVERLOAD 5
+#define HW_ERROR_BIT_OVERHEATING 6
+
+// REGISTER OPERATIONS ////////////////////////////////////////////////////////
+void factory_reset_eeprom_regs();
+void load_eeprom_regs();
+void store_eeprom_regs();
+void reset_ram_regs();
+
+extern uint8_t regs[REG_MAX];
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* INC_CONTROL_TABLE_H_ */

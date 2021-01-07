@@ -1,0 +1,12 @@
+serial.c:18:6:HAL_UART_ErrorCallback	16	static
+serial.c:32:6:HAL_Serial_Init	16	static
+serial.c:59:6:HAL_Serial_Init_Half_Duplex	24	static
+serial.c:98:5:HAL_Serial_Available	24	static
+serial.c:110:6:HAL_Serial_GetChar	32	static
+serial.c:127:5:HAL_Serial_Read	32	static
+serial.c:145:5:HAL_Serial_Write	40	static
+serial.c:197:6:HAL_UART_TxCpltCallback	24	static
+serial.c:248:6:ts_itoa	32	static
+serial.c:272:5:ts_formatstring	40	static
+serial.c:338:5:ts_formatlength	24	static
+serial.c:386:5:HAL_Serial_Print	44	dynamic
