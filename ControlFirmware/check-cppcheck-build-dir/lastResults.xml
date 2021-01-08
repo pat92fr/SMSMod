@@ -72,7 +72,7 @@
             <location file="Core\Src\stm32g4xx_it.c" line="135"/>
         </error>
         <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ADC_ConvCpltCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_ADC_ConvCpltCallback&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
-            <location file="Core\Src\control_algo.c" line="567"/>
+            <location file="Core\Src\control_algo.c" line="578"/>
         </error>
         <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ADC_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_ADC_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
             <location file="Core\Src\stm32g4xx_hal_msp.c" line="158"/>

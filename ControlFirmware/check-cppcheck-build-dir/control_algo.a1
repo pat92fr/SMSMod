@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="1037960093">
+<analyzerinfo checksum="2425302225">
   <FileInfo check="ctu">
-<function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:26:6" call-funcname="pid_reset" call-argnr="1" file="Core/Src/control_algo.c" line="101" col="11" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:26:6" call-funcname="pid_reset" call-argnr="1" file="Core/Src/control_algo.c" line="102" col="11" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:40:7" call-funcname="pid_process_antiwindup_clamp" call-argnr="1" file="Core/Src/control_algo.c" line="211" col="37" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:40:7" call-funcname="pid_process_antiwindup_clamp" call-argnr="1" file="Core/Src/control_algo.c" line="271" col="37" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="293" col="45" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="438" col="45" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/>  </FileInfo>
+<function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:26:6" call-funcname="pid_reset" call-argnr="1" file="Core/Src/control_algo.c" line="101" col="11" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:26:6" call-funcname="pid_reset" call-argnr="1" file="Core/Src/control_algo.c" line="102" col="11" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:40:7" call-funcname="pid_process_antiwindup_clamp" call-argnr="1" file="Core/Src/control_algo.c" line="211" col="37" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:40:7" call-funcname="pid_process_antiwindup_clamp" call-argnr="1" file="Core/Src/control_algo.c" line="271" col="37" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="293" col="45" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="373" col="45" call-argexpr="&pid_position" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="396" col="45" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/pid.h:28:7" call-funcname="pid_process_antiwindup_clamp_with_ff" call-argnr="1" file="Core/Src/control_algo.c" line="447" col="45" call-argexpr="&pid_current" call-argvaluetype="7" call-argvalue="0"/>  </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
     <functiondecl functionName="scale_all_sensors" lineNumber="76"/>
     <functiondecl functionName="APP_Control_Reset" lineNumber="96"/>
     <functiondecl functionName="APP_Control_Init" lineNumber="116"/>
     <functiondecl functionName="APP_Control_Process" lineNumber="147"/>
-    <functiondecl functionName="HAL_ADC_ConvCpltCallback" lineNumber="567"/>
+    <functiondecl functionName="HAL_ADC_ConvCpltCallback" lineNumber="578"/>
     <functioncall functionName="ADC_DMA"/>
     <functioncall functionName="APP_Control_Reset"/>
     <functioncall functionName="HAL_ADC_Start_DMA"/>
@@ -21,12 +21,13 @@
     <functioncall functionName="__HAL_TIM_IS_TIM_COUNTING_DOWN"/>
     <functioncall functionName="__HAL_TIM_SET_COMPARE"/>
     <functioncall functionName="__HAL_TIM_SET_COUNTER"/>
+    <functioncall functionName="acceleration_feed_forward"/>
     <functioncall functionName="break"/>
     <functioncall functionName="char"/>
     <functioncall functionName="current_control_mode"/>
     <functioncall functionName="current_limit"/>
+    <functioncall functionName="delta_v"/>
     <functioncall functionName="entering_state"/>
-    <functioncall functionName="err_integral"/>
     <functioncall functionName="error_current"/>
     <functioncall functionName="error_position"/>
     <functioncall functionName="fabs"/>
@@ -45,9 +46,11 @@
     <functioncall functionName="if"/>
     <functioncall functionName="int16_t"/>
     <functioncall functionName="last_present_position_deg"/>
+    <functioncall functionName="last_setpoint_velocity_dps"/>
     <functioncall functionName="max_goal_position_deg"/>
     <functioncall functionName="max_position_adc"/>
     <functioncall functionName="max_rotation_deg"/>
+    <functioncall functionName="max_velocity_dps"/>
     <functioncall functionName="min_goal_position_deg"/>
     <functioncall functionName="min_position_adc"/>
     <functioncall functionName="motor_current_input_adc"/>
@@ -70,15 +73,20 @@
     <functioncall functionName="present_voltage_0v1"/>
     <functioncall functionName="pwm"/>
     <functioncall functionName="pwm_limit"/>
+    <functioncall functionName="remaining_distance_deg"/>
     <functioncall functionName="return"/>
     <functioncall functionName="scale_all_sensors"/>
     <functioncall functionName="setpoint_current_ma"/>
+    <functioncall functionName="setpoint_position_deg"/>
     <functioncall functionName="setpoint_pwm"/>
+    <functioncall functionName="setpoint_velocity_dps"/>
+    <functioncall functionName="sqrtf"/>
     <functioncall functionName="switch"/>
     <functioncall functionName="torque_enable"/>
     <functioncall functionName="true"/>
     <functioncall functionName="uint16_t"/>
     <functioncall functionName="uint8_t"/>
+    <functioncall functionName="vmax"/>
     <functioncall functionName="voltage_input_adc"/>
   </FileInfo>
 </analyzerinfo>

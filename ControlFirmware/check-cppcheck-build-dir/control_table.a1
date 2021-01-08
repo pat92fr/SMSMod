@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<analyzerinfo checksum="2363800263">
+<analyzerinfo checksum="1358331031">
   <FileInfo check="ctu">
 <function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/eeprom.h:16:19" call-funcname="eeprom_store" call-argnr="1" file="Core/Src/control_table.c" line="78" col="14" call-argexpr="regs" call-argvaluetype="7" call-argvalue="130"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/eeprom.h:15:19" call-funcname="eeprom_restore" call-argnr="1" file="Core/Src/control_table.c" line="84" col="16" call-argexpr="regs" call-argvaluetype="7" call-argvalue="130"/><function-call call-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/eeprom.h:16:19" call-funcname="eeprom_store" call-argnr="1" file="Core/Src/control_table.c" line="89" col="14" call-argexpr="regs" call-argvaluetype="7" call-argvalue="130"/>  </FileInfo>
   <FileInfo check="CheckUnusedFunctions">
