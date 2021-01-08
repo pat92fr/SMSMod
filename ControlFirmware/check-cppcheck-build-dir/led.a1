@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3573440212">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="stop_blinking" lineNumber="22"/>
+    <functiondecl functionName="HAL_Led_Init" lineNumber="32"/>
+    <functiondecl functionName="HAL_Led_Process" lineNumber="43"/>
+    <functiondecl functionName="HAL_Led_Set" lineNumber="77"/>
+    <functiondecl functionName="HAL_Led_Reset" lineNumber="83"/>
+    <functiondecl functionName="HAL_Led_Toggle" lineNumber="89"/>
+    <functiondecl functionName="HAL_Led_Get" lineNumber="98"/>
+    <functiondecl functionName="HAL_Led_Blink" lineNumber="106"/>
+    <functioncall functionName="GPIOA"/>
+    <functioncall functionName="GPIO_PIN_11"/>
+    <functioncall functionName="GPIO_PIN_RESET"/>
+    <functioncall functionName="GPIO_PIN_SET"/>
+    <functioncall functionName="HAL_GPIO_ReadPin"/>
+    <functioncall functionName="HAL_GPIO_WritePin"/>
+    <functioncall functionName="HAL_GetTick"/>
+    <functioncall functionName="LED_COUNT"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="for"/>
+    <functioncall functionName="id"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="period_ms"/>
+    <functioncall functionName="stop_blinking"/>
+  </FileInfo>
+</analyzerinfo>

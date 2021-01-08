@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3391053730">
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:97:6" my-argnr="1" my-argname="hadc" file="Core/Src/stm32g4xx_hal_msp.c" line="100" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:158:6" my-argnr="1" my-argname="hadc" file="Core/Src/stm32g4xx_hal_msp.c" line="160" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:194:6" my-argnr="1" my-argname="hopamp" file="Core/Src/stm32g4xx_hal_msp.c" line="197" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:226:6" my-argnr="1" my-argname="hopamp" file="Core/Src/stm32g4xx_hal_msp.c" line="228" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:253:6" my-argnr="1" my-argname="htim_base" file="Core/Src/stm32g4xx_hal_msp.c" line="255" col="6" value="0"/>
+    <unsafe-usage my-id="C:/GitHub/SMSMod/ControlFirmware/Core/Inc/main.h:53:6" my-argnr="1" my-argname="htim" file="Core/Src/stm32g4xx_hal_msp.c" line="286" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:316:6" my-argnr="1" my-argname="htim_base" file="Core/Src/stm32g4xx_hal_msp.c" line="318" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:352:6" my-argnr="1" my-argname="huart" file="Core/Src/stm32g4xx_hal_msp.c" line="355" col="6" value="0"/>
+    <unsafe-usage my-id="Core/Src/stm32g4xx_hal_msp.c:434:6" my-argnr="1" my-argname="huart" file="Core/Src/stm32g4xx_hal_msp.c" line="436" col="6" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="HAL_MspInit" lineNumber="71"/>
+    <functiondecl functionName="HAL_ADC_MspInit" lineNumber="97"/>
+    <functiondecl functionName="HAL_ADC_MspDeInit" lineNumber="158"/>
+    <functiondecl functionName="HAL_OPAMP_MspInit" lineNumber="194"/>
+    <functiondecl functionName="HAL_OPAMP_MspDeInit" lineNumber="226"/>
+    <functiondecl functionName="HAL_TIM_Base_MspInit" lineNumber="253"/>
+    <functiondecl functionName="HAL_TIM_MspPostInit" lineNumber="283"/>
+    <functiondecl functionName="HAL_TIM_Base_MspDeInit" lineNumber="316"/>
+    <functiondecl functionName="HAL_UART_MspInit" lineNumber="352"/>
+    <functiondecl functionName="HAL_UART_MspDeInit" lineNumber="434"/>
+    <functioncall functionName="ADC1_2_IRQn"/>
+    <functioncall functionName="DMA1_Channel1"/>
+    <functioncall functionName="DMA1_Channel2"/>
+    <functioncall functionName="DMA1_Channel3"/>
+    <functioncall functionName="DMA_CIRCULAR"/>
+    <functioncall functionName="DMA_Handle"/>
+    <functioncall functionName="DMA_MDATAALIGN_BYTE"/>
+    <functioncall functionName="DMA_MDATAALIGN_HALFWORD"/>
+    <functioncall functionName="DMA_MEMORY_TO_PERIPH"/>
+    <functioncall functionName="DMA_MINC_ENABLE"/>
+    <functioncall functionName="DMA_NORMAL"/>
+    <functioncall functionName="DMA_PDATAALIGN_BYTE"/>
+    <functioncall functionName="DMA_PDATAALIGN_HALFWORD"/>
+    <functioncall functionName="DMA_PERIPH_TO_MEMORY"/>
+    <functioncall functionName="DMA_PINC_DISABLE"/>
+    <functioncall functionName="DMA_PRIORITY_LOW"/>
+    <functioncall functionName="DMA_REQUEST_ADC1"/>
+    <functioncall functionName="DMA_REQUEST_USART2_RX"/>
+    <functioncall functionName="DMA_REQUEST_USART2_TX"/>
+    <functioncall functionName="Error_Handler"/>
+    <functioncall functionName="GPIOA"/>
+    <functioncall functionName="GPIOB"/>
+    <functioncall functionName="GPIOF"/>
+    <functioncall functionName="GPIO_AF2_TIM4"/>
+    <functioncall functionName="GPIO_AF7_USART2"/>
+    <functioncall functionName="GPIO_InitStruct"/>
+    <functioncall functionName="GPIO_MODE_AF_PP"/>
+    <functioncall functionName="GPIO_MODE_ANALOG"/>
+    <functioncall functionName="GPIO_NOPULL"/>
+    <functioncall functionName="GPIO_PIN_0"/>
+    <functioncall functionName="GPIO_PIN_15"/>
+    <functioncall functionName="GPIO_PIN_3"/>
+    <functioncall functionName="GPIO_PIN_7"/>
+    <functioncall functionName="GPIO_SPEED_FREQ_LOW"/>
+    <functioncall functionName="HAL_DMA_DeInit"/>
+    <functioncall functionName="HAL_DMA_Init"/>
+    <functioncall functionName="HAL_GPIO_DeInit"/>
+    <functioncall functionName="HAL_GPIO_Init"/>
+    <functioncall functionName="HAL_NVIC_DisableIRQ"/>
+    <functioncall functionName="HAL_NVIC_EnableIRQ"/>
+    <functioncall functionName="HAL_NVIC_SetPriority"/>
+    <functioncall functionName="HAL_PWREx_DisableUCPDDeadBattery"/>
+    <functioncall functionName="TIM4_IRQn"/>
+    <functioncall functionName="USART2_IRQn"/>
+    <functioncall functionName="__HAL_LINKDMA"/>
+    <functioncall functionName="__HAL_RCC_ADC12_CLK_DISABLE"/>
+    <functioncall functionName="__HAL_RCC_ADC12_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOA_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOB_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_GPIOF_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_PWR_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_SYSCFG_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_TIM15_CLK_DISABLE"/>
+    <functioncall functionName="__HAL_RCC_TIM15_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_TIM4_CLK_DISABLE"/>
+    <functioncall functionName="__HAL_RCC_TIM4_CLK_ENABLE"/>
+    <functioncall functionName="__HAL_RCC_USART2_CLK_DISABLE"/>
+    <functioncall functionName="__HAL_RCC_USART2_CLK_ENABLE"/>
+    <functioncall functionName="hadc"/>
+    <functioncall functionName="hdma_adc1"/>
+    <functioncall functionName="hdma_usart2_rx"/>
+    <functioncall functionName="hdma_usart2_tx"/>
+    <functioncall functionName="hdmarx"/>
+    <functioncall functionName="hdmatx"/>
+    <functioncall functionName="huart"/>
+    <functioncall functionName="if"/>
+  </FileInfo>
+</analyzerinfo>

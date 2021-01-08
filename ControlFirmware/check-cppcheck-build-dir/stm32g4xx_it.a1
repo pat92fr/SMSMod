@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="3899870055">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="NMI_Handler" lineNumber="75"/>
+    <functiondecl functionName="HardFault_Handler" lineNumber="90"/>
+    <functiondecl functionName="MemManage_Handler" lineNumber="105"/>
+    <functiondecl functionName="BusFault_Handler" lineNumber="120"/>
+    <functiondecl functionName="UsageFault_Handler" lineNumber="135"/>
+    <functiondecl functionName="SVC_Handler" lineNumber="150"/>
+    <functiondecl functionName="DebugMon_Handler" lineNumber="163"/>
+    <functiondecl functionName="PendSV_Handler" lineNumber="176"/>
+    <functiondecl functionName="SysTick_Handler" lineNumber="189"/>
+    <functiondecl functionName="DMA1_Channel1_IRQHandler" lineNumber="210"/>
+    <functiondecl functionName="DMA1_Channel2_IRQHandler" lineNumber="224"/>
+    <functiondecl functionName="DMA1_Channel3_IRQHandler" lineNumber="238"/>
+    <functiondecl functionName="ADC1_2_IRQHandler" lineNumber="252"/>
+    <functiondecl functionName="TIM4_IRQHandler" lineNumber="266"/>
+    <functiondecl functionName="USART2_IRQHandler" lineNumber="280"/>
+    <functioncall functionName="HAL_ADC_IRQHandler"/>
+    <functioncall functionName="HAL_DMA_IRQHandler"/>
+    <functioncall functionName="HAL_IncTick"/>
+    <functioncall functionName="HAL_TIM_IRQHandler"/>
+    <functioncall functionName="HAL_UART_IRQHandler"/>
+    <functioncall functionName="hadc1"/>
+    <functioncall functionName="hdma_adc1"/>
+    <functioncall functionName="hdma_usart2_rx"/>
+    <functioncall functionName="hdma_usart2_tx"/>
+    <functioncall functionName="htim4"/>
+    <functioncall functionName="huart2"/>
+    <functioncall functionName="while"/>
+  </FileInfo>
+</analyzerinfo>

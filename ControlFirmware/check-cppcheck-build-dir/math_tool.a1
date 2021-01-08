@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<analyzerinfo checksum="449802114">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="constrain" lineNumber="10"/>
+    <functiondecl functionName="fconstrain" lineNumber="20"/>
+    <functiondecl functionName="map" lineNumber="30"/>
+    <functiondecl functionName="fmap" lineNumber="40"/>
+    <functioncall functionName="if"/>
+    <functioncall functionName="in_min"/>
+    <functioncall functionName="out_min"/>
+    <functioncall functionName="return"/>
+    <functioncall functionName="x"/>
+  </FileInfo>
+</analyzerinfo>

@@ -1,3 +1,4 @@
 pic.c:13:6:pid_reset	16	static
-pic.c:20:7:pid_process_antiwindup_clamp	64	static
-pic.c:54:7:pid_process_antiwindup_back_calculation	72	static
+pic.c:20:7:pid_process_antiwindup_clamp_with_ff	64	static
+pic.c:55:7:pid_process_antiwindup_clamp	64	static
+pic.c:89:7:pid_process_antiwindup_back_calculation	72	static

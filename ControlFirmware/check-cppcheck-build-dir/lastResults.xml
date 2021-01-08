@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.2"/>
+    <errors>
+        <error id="variableScope" severity="style" msg="The scope of the variable &amp;#039;i&amp;#039; can be reduced." verbose="The scope of the variable &amp;#039;i&amp;#039; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &amp;#039;i&amp;#039; can be reduced:&#10;void f(int x)&#10;{&#10;    int i = 0;&#10;    if (x) {&#10;        // it&amp;#039;s safe to move &amp;#039;int i = 0;&amp;#039; here&#10;        for (int n = 0; n &amp;lt; 10; ++n) {&#10;            // it is possible but not safe to move &amp;#039;int i = 0;&amp;#039; here&#10;            do_something(&amp;amp;i);&#10;        }&#10;    }&#10;}&#10;When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" hash="3708351478888232744" sinceDate="08/01/2021">
+            <location file0="Core/Src/protocol.c" file="Core\Src\protocol.c" line="17"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="225"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSE_VALUE&amp;#039; since the value of &amp;#039;HSE_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="240"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="135"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="221"/>
+        </error>
+        <error id="ConfigurationNotChecked" severity="information" msg="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." verbose="Skipping configuration &amp;#039;HSI_VALUE&amp;#039; since the value of &amp;#039;HSI_VALUE&amp;#039; is unknown. Use -D if you want to check it. You can use -U to skip it explicitly." sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="236"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SystemCoreClockUpdate&amp;#039; is never used." verbose="The function &amp;#039;SystemCoreClockUpdate&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="213"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SystemInit&amp;#039; is never used." verbose="The function &amp;#039;SystemInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\system_stm32g4xx.c" line="162"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;ADC1_2_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;ADC1_2_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="252"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;BusFault_Handler&amp;#039; is never used." verbose="The function &amp;#039;BusFault_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="120"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;DMA1_Channel1_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;DMA1_Channel1_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="210"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;DMA1_Channel2_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;DMA1_Channel2_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="224"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;DMA1_Channel3_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;DMA1_Channel3_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="238"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;DebugMon_Handler&amp;#039; is never used." verbose="The function &amp;#039;DebugMon_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="163"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HardFault_Handler&amp;#039; is never used." verbose="The function &amp;#039;HardFault_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="90"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;MemManage_Handler&amp;#039; is never used." verbose="The function &amp;#039;MemManage_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="105"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;NMI_Handler&amp;#039; is never used." verbose="The function &amp;#039;NMI_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="75"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;PendSV_Handler&amp;#039; is never used." verbose="The function &amp;#039;PendSV_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="176"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SVC_Handler&amp;#039; is never used." verbose="The function &amp;#039;SVC_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="150"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;SysTick_Handler&amp;#039; is never used." verbose="The function &amp;#039;SysTick_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="189"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;TIM4_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;TIM4_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="266"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;USART2_IRQHandler&amp;#039; is never used." verbose="The function &amp;#039;USART2_IRQHandler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="280"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;UsageFault_Handler&amp;#039; is never used." verbose="The function &amp;#039;UsageFault_Handler&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_it.c" line="135"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ADC_ConvCpltCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_ADC_ConvCpltCallback&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\control_algo.c" line="567"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ADC_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_ADC_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="158"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_ADC_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_ADC_MspInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="97"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_MspInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="71"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_OPAMP_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_OPAMP_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="226"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_OPAMP_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_OPAMP_MspInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="194"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_Base_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_Base_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="316"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_TIM_Base_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_TIM_Base_MspInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="253"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_MspDeInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_MspDeInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="434"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_MspInit&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_MspInit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\stm32g4xx_hal_msp.c" line="352"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_Led_Get&amp;#039; is never used." verbose="The function &amp;#039;HAL_Led_Get&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\led.c" line="98"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_Led_Toggle&amp;#039; is never used." verbose="The function &amp;#039;HAL_Led_Toggle&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\led.c" line="89"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_Serial_Init&amp;#039; is never used." verbose="The function &amp;#039;HAL_Serial_Init&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\serial.c" line="32"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_Serial_Print&amp;#039; is never used." verbose="The function &amp;#039;HAL_Serial_Print&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\serial.c" line="386"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_Serial_Read&amp;#039; is never used." verbose="The function &amp;#039;HAL_Serial_Read&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\serial.c" line="127"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_ErrorCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_ErrorCallback&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\serial.c" line="18"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;HAL_UART_TxCpltCallback&amp;#039; is never used." verbose="The function &amp;#039;HAL_UART_TxCpltCallback&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\serial.c" line="197"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_close&amp;#039; is never used." verbose="The function &amp;#039;_close&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="92"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_execve&amp;#039; is never used." verbose="The function &amp;#039;_execve&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="155"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_exit&amp;#039; is never used." verbose="The function &amp;#039;_exit&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="63"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_fork&amp;#039; is never used." verbose="The function &amp;#039;_fork&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="149"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_fstat&amp;#039; is never used." verbose="The function &amp;#039;_fstat&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="98"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_getpid&amp;#039; is never used." verbose="The function &amp;#039;_getpid&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="52"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_isatty&amp;#039; is never used." verbose="The function &amp;#039;_isatty&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="104"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_link&amp;#039; is never used." verbose="The function &amp;#039;_link&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="143"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_lseek&amp;#039; is never used." verbose="The function &amp;#039;_lseek&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="109"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_open&amp;#039; is never used." verbose="The function &amp;#039;_open&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="114"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_read&amp;#039; is never used." verbose="The function &amp;#039;_read&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="69"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_stat&amp;#039; is never used." verbose="The function &amp;#039;_stat&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="137"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_times&amp;#039; is never used." verbose="The function &amp;#039;_times&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="132"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_unlink&amp;#039; is never used." verbose="The function &amp;#039;_unlink&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="126"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_wait&amp;#039; is never used." verbose="The function &amp;#039;_wait&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="120"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_write&amp;#039; is never used." verbose="The function &amp;#039;_write&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="81"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;initialise_monitor_handles&amp;#039; is never used." verbose="The function &amp;#039;initialise_monitor_handles&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\syscalls.c" line="48"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;_sbrk&amp;#039; is never used." verbose="The function &amp;#039;_sbrk&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\sysmem.c" line="54"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;assert_failed&amp;#039; is never used." verbose="The function &amp;#039;assert_failed&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\main.c" line="599"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;constrain&amp;#039; is never used." verbose="The function &amp;#039;constrain&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\math_tool.c" line="10"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;map&amp;#039; is never used." verbose="The function &amp;#039;map&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\math_tool.c" line="30"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;eeprom_base_address&amp;#039; is never used." verbose="The function &amp;#039;eeprom_base_address&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\eeprom.c" line="14"/>
+        </error>
+        <error id="unusedFunction" severity="style" msg="The function &amp;#039;pid_process_antiwindup_back_calculation&amp;#039; is never used." verbose="The function &amp;#039;pid_process_antiwindup_back_calculation&amp;#039; is never used." cwe="561" sinceDate="08/01/2021">
+            <location file="Core\Src\pic.c" line="89"/>
+        </error>
+    </errors>
+</results>

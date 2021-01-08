@@ -22,67 +22,77 @@ extern OPAMP_HandleTypeDef hopamp1;
 
 // CONTROL LOOP
 #define LOOP_FREQUENCY_HZ 1000.0f //Hz
+
 // MOTOR
 #define MOTOR_PWM_BRAKE 99
 #define MOTOR_PWM_COAST 0
+
 // POSITION FILTER
-#define ALPHA_POSITION			0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
-#define ALPHA_VOLTAGE			0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
-#define ALPHA_CURRENT_SENSE		0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
+#define ALPHA_POSITION				0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
+#define ALPHA_VOLTAGE				0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
+#define ALPHA_CURRENT_SENSE			0.05f // (default:0.05) F = 20kHz ==> Fc (-3dB) = 170.0Hz
+#define ALPHA_CURRENT_SENSE_OFFSET 	0.001f
+
+
 #define ALPHA_VELOCITY			0.12f // (default:0.12) F = 1000Hz ==> Fc (-3dB) = 20Hz
 #define ALPHA_CURRENT_SETPOINT 	0.96f // (default:0.12) F = 1000Hz ==> Fc (-3dB) = 20Hz
 #define ALPHA_PWM_SETPOINT		0.12f // (default:0.12) F = 1000Hz ==> Fc (-3dB) = 20.0Hz
-#define ALPHA_B					0.001f
 #define VOLTAGE_CALIBRATION 	1.08f
-// PID WINDUP = 0..99
-#define LIMIT_PID_POSITION_WINDUP 99
-#define LIMIT_PID_CURRENT_WINDUP 33
 
 // Private Variables
+
+// raw sensor inputs
 volatile uint16_t ADC_DMA[3] = { 0,0,0 };
-static uint16_t motor_current_input_adc = 0;
+// filtered sensor inputs
+static float motor_current_input_adc = 0.0f;
 static float position_input_adc = 0.0f;
 static float voltage_input_adc = 0.0f;
-static uint32_t current_control_mode = REG_CONTROL_MODE_POSITION;
-static uint16_t const period_us = (uint16_t)(1000000.0f/LOOP_FREQUENCY_HZ);
-static uint32_t counter = 0;
-static pid_context_t pid_position;
-static pid_context_t pid_current;
+static float motor_current_input_adc_offset = 0.0f;
+static float pwm_sign = 0.0f;
+static float pwm_ratio = 0.0f;
+// scaled sensor inputs
+static float present_motor_current_ma = 0.0f;
 static float present_position_deg = 0.0f;
-static float present_velocity_dps = 0.0f;
-static float present_current_ma_on = 0.0f;
-static float present_current_ma_off = 0.0f;
+static float present_voltage_0v1 = 0.0f;
+// setpoints
 static float setpoint_pwm = 0.0f;
 static float setpoint_current_ma = 0.0f;
 static float setpoint_acceleration_dpss = 0.0f;
 static float setpoint_velocity_dps = 0.0f;
 static float setpoint_position_deg = 0.0f;
-static float b = 0;
+// control loop state
+static bool entering_state = true;
+static uint32_t current_control_mode = REG_CONTROL_MODE_POSITION_TORQUE;
+static uint16_t const period_us = (uint16_t)(1000000.0f/LOOP_FREQUENCY_HZ);
+static uint32_t counter = 0;
+// PIDs
+static pid_context_t pid_position;
+static pid_context_t pid_current;
+// variables
+static float present_velocity_dps = 0.0f;
 static float last_present_position_deg = 0.0f;
 static float last_setpoint_velocity_dps = 0.0f;
-static bool entering_state = true;
 
-
-float query_position_sensor()
+void scale_all_sensors()
 {
-	// read input position sensor
-	//position_input_adc = read_adc(&hadc2,ADC_CHANNEL_10,ADC_SAMPLETIME_47CYCLES_5);
-	uint16_t const min_position_adc = MAKE_SHORT(regs[REG_MIN_POSITION_ADC_L],regs[REG_MIN_POSITION_ADC_H]);
-	uint16_t const max_position_adc = MAKE_SHORT(regs[REG_MAX_POSITION_ADC_L],regs[REG_MAX_POSITION_ADC_H]);
-	//bool const position_input_adc_valid = (position_input_adc>=min_position_adc) && (position_input_adc<=max_position_adc);
+	// scale motor current sense (unit:mA) and estimated average motor current with sign (using PWM ratio and setpoint PWM sign)
+	float const a = (float)(MAKE_SHORT(regs[REG_CAL_CURRENT_SENSE_A_L],regs[REG_CAL_CURRENT_SENSE_A_H]));
+	present_motor_current_ma = (motor_current_input_adc-motor_current_input_adc_offset)/a*1000.0f*pwm_sign*pwm_ratio;
 
-	// compute present position in deg and apply scale and inversion
+	// scale position (unit:degrees)
+	float const min_position_adc = (float)(MAKE_SHORT(regs[REG_MIN_POSITION_ADC_L],regs[REG_MIN_POSITION_ADC_H]));
+	float const max_position_adc = (float)(MAKE_SHORT(regs[REG_MAX_POSITION_ADC_L],regs[REG_MAX_POSITION_ADC_H]));
 	float const max_rotation_deg = (float)(regs[REG_MAX_ROTATION_DEG]);
-	float present_position_deg_unfiltered = fmap((float)position_input_adc,(float)min_position_adc,(float)max_position_adc,0.0f,max_rotation_deg);
-	float const inv_rotation_sensor = regs[REG_INV_ROTATION_SENSOR] > 0 ? -1.0f : 0.0f;
-	if(inv_rotation_sensor<0)
-	{
-		present_position_deg_unfiltered =  max_rotation_deg-present_position_deg_unfiltered;
-	}
-	return present_position_deg_unfiltered;
+	present_position_deg = fmap(position_input_adc,min_position_adc,max_position_adc,0.0f,max_rotation_deg);
+	// potentiometer leads maybe inverted, user can reverse polarity of potentiometer (EEPROM parameter)
+	if(regs[REG_INV_ROTATION_SENSOR] > 0)
+		present_position_deg =  max_rotation_deg-present_position_deg;
+
+	// scale voltage (unit:0.1V)
+	present_voltage_0v1 = voltage_input_adc/4096.0f*3.3f*24.2f/2.2f*10.0f*VOLTAGE_CALIBRATION;
 }
 
-
+// called once after SW REBBOT or HW RESET, and every time entering a new control loop mode
 void APP_Control_Reset()
 {
 	// reset
@@ -96,49 +106,58 @@ void APP_Control_Reset()
 	setpoint_velocity_dps = 0.0f;
 	last_setpoint_velocity_dps = 0.0f;
 	setpoint_position_deg = present_position_deg;
+	last_present_position_deg = present_position_deg;
 	// when re-entering in the control mode 'position', avoid glitch from past goal position
 	regs[REG_GOAL_POSITION_DEG_L] = LOW_BYTE((int16_t)(present_position_deg*10.0f));
 	regs[REG_GOAL_POSITION_DEG_H] = HIGH_BYTE((int16_t)(present_position_deg*10.0f));
-
 }
 
+// called once after SW REBOOT or HW RESET
 void APP_Control_Init()
 {
-	// start aMPOP
-	HAL_OPAMP_Start(&hopamp1);
-	// start adc conv trigger
-	HAL_ADC_Start_DMA(&hadc1,(uint32_t*)ADC_DMA,3);
+	// reset (EWMA) filtered sensor inputs
+	motor_current_input_adc = 0.0f;
+	position_input_adc = 0.0f; // NOTE : init by zero will delay the present position estimation by 1 ms at least
+	voltage_input_adc = 0.0f; // NOTE : init by zero will delay the present voltage estimation by 1 ms at least
+	motor_current_input_adc_offset = (float)(MAKE_SHORT(regs[REG_CAL_CURRENT_SENSE_B_L],regs[REG_CAL_CURRENT_SENSE_B_H]));
 
-	// motor Hi-Z
+	// force motor in coast
 	__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_COAST);
 	__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_COAST);
-	// motor init
+	// start motor PWM generation
 	HAL_TIM_PWM_Start_IT(&htim4,TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start_IT(&htim4,TIM_CHANNEL_2);
 	HAL_TIM_Base_Start(&htim15);
+	// start OP AMP
+	HAL_OPAMP_Start(&hopamp1);
+	// start ADC
+	HAL_ADC_Start_DMA(&hadc1,(uint32_t*)ADC_DMA,3);
 
-	// first position update, force goal at present position to avoid mechanical glicth at startup
-	present_position_deg = query_position_sensor();
-	last_present_position_deg = present_position_deg;
+	// 2ms delay for filtered sensor inputs to stabilize
+	HAL_Delay(1);
+	scale_all_sensors();
+	HAL_Delay(1);
+	scale_all_sensors();
 
-	// defaut control mode and reset
-	current_control_mode = REG_CONTROL_MODE_POSITION;
+	// reset all state control loop variables
 	APP_Control_Reset();
 }
 
-
+// called from main loop
 void APP_Control_Process()
 {
-	uint16_t current_time = __HAL_TIM_GET_COUNTER(&htim15);
-	// wait for period
-	if(current_time<period_us)
+	// apply 1ms period
+	uint16_t current_time_us = __HAL_TIM_GET_COUNTER(&htim15);
+	if(current_time_us<period_us)
 		return;
-	__HAL_TIM_SET_COUNTER(&htim15,(current_time-period_us));
+	__HAL_TIM_SET_COUNTER(&htim15,(current_time_us-period_us));
 
-	// read position and filter
-	float const present_position_deg = query_position_sensor();
+	// acquire motor current, position and voltage (see ADC DMA completed conversion callback)
 
-	// compute present speed in dps, present position derivative
+	// scale sensor at process rate
+	scale_all_sensors();
+
+	// compute velocity from position (derivative), and filter velocity (EWMA)
 	float present_speed_dps_unfiltered = (present_position_deg - last_present_position_deg)*LOOP_FREQUENCY_HZ;
 	last_present_position_deg =  present_position_deg;
 	present_velocity_dps = ALPHA_VELOCITY * present_speed_dps_unfiltered + (1.0f-ALPHA_VELOCITY)*present_velocity_dps;
@@ -263,7 +282,7 @@ void APP_Control_Process()
 			}
 			{
 				// compute current error
-				float const error_current = setpoint_current_ma - present_current_ma_on;
+				float const error_current = setpoint_current_ma - present_motor_current_ma;
 				// compute pwm setpoint from current error using a PI
 				float const pid_current_kp = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KP_L],regs[REG_PID_CURRENT_KP_H]))/1000.0f;
 				float const pid_current_ki = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KI_L],regs[REG_PID_CURRENT_KI_H]))/100.0f;
@@ -271,15 +290,15 @@ void APP_Control_Process()
 				float const pwm_limit = (float)(MAKE_SHORT(regs[REG_GOAL_PWM_100_L],regs[REG_GOAL_PWM_100_H]));
 				setpoint_pwm =
 						ALPHA_PWM_SETPOINT * (
-								pid_current_kff * setpoint_current_ma +
-								pid_process_antiwindup_clamp(
+								pid_process_antiwindup_clamp_with_ff(
 										&pid_current,
 										error_current,
 										pid_current_kp,
 										pid_current_ki,
 										0.0f,
 										pwm_limit,
-										0.0f
+										0.0f,
+										pid_current_kff * setpoint_current_ma
 								)
 							) +
 							(1.0f-ALPHA_PWM_SETPOINT) * setpoint_pwm ;
@@ -408,7 +427,7 @@ void APP_Control_Process()
 				//setpoint_current_ma = fconstrain(goal_current,-current_limit,current_limit);
 				setpoint_current_ma = goal_current;
 				// compute current error
-				float const error_current = setpoint_current_ma - present_current_ma_on;
+				float const error_current = setpoint_current_ma - present_motor_current_ma;
 				// compute pwm setpoint from current error using a PI
 				float const pid_current_kp = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KP_L],regs[REG_PID_CURRENT_KP_H]))/100.0f;
 				float const pid_current_ki = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KI_L],regs[REG_PID_CURRENT_KI_H]))/1000.0f;
@@ -416,15 +435,15 @@ void APP_Control_Process()
 				float const pwm_limit = (float)(MAKE_SHORT(regs[REG_GOAL_PWM_100_L],regs[REG_GOAL_PWM_100_H]));
 				setpoint_pwm =
 						ALPHA_PWM_SETPOINT * (
-								pid_current_kff * setpoint_current_ma +
-								pid_process_antiwindup_clamp(
+								pid_process_antiwindup_clamp_with_ff(
 										&pid_current,
 										error_current,
 										pid_current_kp,
 										pid_current_ki,
 										0.0f,
 										pwm_limit,
-										0.0f
+										0.0f,
+										pid_current_kff * setpoint_current_ma
 								)
 							) +
 							(1.0f-ALPHA_PWM_SETPOINT) * setpoint_pwm ;
@@ -466,31 +485,21 @@ void APP_Control_Process()
 			break;
 		}
 
-		// common
+		// motor leads maybe inverted, user can reverse polarity of motor (EEPROM parameter)
 		float const pwm_inv = regs[REG_INV_ROTATION_MOTOR] > 0 ? -1.0f : 1.0f;
 		float pwm = pwm_inv * setpoint_pwm;
 
 		// apply pwm
-		if(pwm>0.0f)
+		if(pwm>=0.0f)
 		{
-			//__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,pwm);
-			//__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_COAST);
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_BRAKE);
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_BRAKE-pwm);
 
 
 		}
-		else if(pwm<0.0f)
-		{
-			//__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_COAST);
-			//__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,-pwm);
-			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_BRAKE+pwm);
-			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_BRAKE);
-		}
 		else
 		{
-			// motor brake
-			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_BRAKE);
+			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,MOTOR_PWM_BRAKE+pwm);
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_BRAKE);
 		}
 	}
@@ -502,6 +511,12 @@ void APP_Control_Process()
 		__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,MOTOR_PWM_BRAKE);
 	}
 
+	// Note : This is an unipolar current sensing architecture,
+	// then motor current is always positive in FORWARD and REVERSE drive phase,
+	// and zero in BRAKE phases. So, the sign of the current, is build from the sign of the PWM setpoint
+	pwm_sign = ( setpoint_pwm < 0.0f ) ? -1.0f : 1.0f;
+	pwm_ratio = fabsf(setpoint_pwm)/100.0f;
+
 	// live update of RAM regs
 	regs[REG_PRESENT_POSITION_DEG_L] = LOW_BYTE((uint16_t)(present_position_deg*10.0f));
 	regs[REG_PRESENT_POSITION_DEG_H] = HIGH_BYTE((uint16_t)(present_position_deg*10.0f));
@@ -509,10 +524,10 @@ void APP_Control_Process()
 	regs[REG_PRESENT_VELOCITY_DPS_L] = LOW_BYTE((int16_t)present_velocity_dps);
 	regs[REG_PRESENT_VELOCITY_DPS_H] = HIGH_BYTE((int16_t)present_velocity_dps);
 
-	regs[REG_PRESENT_CURRENT_MA_L] = LOW_BYTE((int16_t)present_current_ma_on);
-	regs[REG_PRESENT_CURRENT_MA_H] = HIGH_BYTE((int16_t)present_current_ma_on);
+	regs[REG_PRESENT_CURRENT_MA_L] = LOW_BYTE((int16_t)present_motor_current_ma);
+	regs[REG_PRESENT_CURRENT_MA_H] = HIGH_BYTE((int16_t)present_motor_current_ma);
 
-	regs[REG_PRESENT_VOLTAGE] = (uint8_t)(voltage_input_adc/4096.0f*3.3f*24.2f/2.2f*10.0f*VOLTAGE_CALIBRATION);
+	regs[REG_PRESENT_VOLTAGE] = (uint8_t)(present_voltage_0v1);
 	regs[REG_PRESENT_TEMPERATURE] = 0;
 
 	float moving_threshold = regs[REG_MOVING_THRESHOLD_DPS];
@@ -532,103 +547,57 @@ void APP_Control_Process()
 	regs[REG_SETPOINT_PWM_100_L] = LOW_BYTE((int16_t)setpoint_pwm);
 	regs[REG_SETPOINT_PWM_100_H] = HIGH_BYTE((int16_t)setpoint_pwm);
 
-	regs[POSITION_INPUT_ADC_L] = LOW_BYTE((uint16_t)position_input_adc);
-	regs[POSITION_INPUT_ADC_H] = HIGH_BYTE((uint16_t)position_input_adc);
+	regs[REG_MOTOR_CURRENT_INPUT_ADC_L] = LOW_BYTE((uint16_t)motor_current_input_adc);
+	regs[REG_MOTOR_CURRENT_INPUT_ADC_H] = HIGH_BYTE((uint16_t)motor_current_input_adc);
 
-	regs[CURRENT_INPUT_ADC_L] = LOW_BYTE((uint16_t)motor_current_input_adc);
-	regs[CURRENT_INPUT_ADC_H] = HIGH_BYTE((uint16_t)motor_current_input_adc);
+	regs[REG_MOTOR_CURRENT_INPUT_ADC_OFFSET_L] = LOW_BYTE((uint16_t)motor_current_input_adc_offset);
+	regs[REG_MOTOR_CURRENT_INPUT_ADC_OFFSET_H] = HIGH_BYTE((uint16_t)motor_current_input_adc_offset);
 
-	regs[PRESENT_CURRENT_ON_L] = LOW_BYTE((int16_t)present_current_ma_on);
-	regs[PRESENT_CURRENT_ON_H] = HIGH_BYTE((int16_t)present_current_ma_on);
+	regs[REG_POSITION_INPUT_ADC_L] = LOW_BYTE((uint16_t)position_input_adc);
+	regs[REG_POSITION_INPUT_ADC_H] = HIGH_BYTE((uint16_t)position_input_adc);
 
-	regs[PRESENT_CURRENT_OFF_L] = LOW_BYTE((int16_t)present_current_ma_off);
-	regs[PRESENT_CURRENT_OFF_H] = HIGH_BYTE((int16_t)present_current_ma_off);
+	regs[REG_VOLTAGE_INPUT_ADC_L] = LOW_BYTE((uint16_t)voltage_input_adc);
+	regs[REG_VOLTAGE_INPUT_ADC_H] = HIGH_BYTE((uint16_t)voltage_input_adc);
 
-	regs[REG_EST_CURRENT_SENSE_B_L] = LOW_BYTE((uint16_t)b);
-	regs[REG_EST_CURRENT_SENSE_B_H] = HIGH_BYTE((uint16_t)b);
-// steps
+	// steps
 	++counter;
 }
-
 
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	if(hadc==&hadc1)
 	{
-		motor_current_input_adc = ADC_DMA[0];
-		position_input_adc = ALPHA_POSITION * (float)(ADC_DMA[1]) + (1.0f-ALPHA_POSITION) * position_input_adc;
+		// Filter (EWMA) position and voltage ADC samples
 		voltage_input_adc = ALPHA_VOLTAGE * (float)(ADC_DMA[2]) + (1.0f-ALPHA_VOLTAGE) * voltage_input_adc;
+		position_input_adc = ALPHA_POSITION * (float)(ADC_DMA[1]) + (1.0f-ALPHA_POSITION) * position_input_adc;
 
-		// motor current is always positive in FORWARD and REVERSE drive phase (unipolar current sensing),
-		// get sign from PWM setpoint
-		float const pwm_sign = ( setpoint_pwm < 0.0f ) ? -1.0f : 1.0f;
-		float const pwm_ratio = fabsf(setpoint_pwm)/100.0f;
-		float const pwm_ratio_inv = 0.99f-pwm_ratio;
-		// motor current cannot be estimated if pulse is too short for ADC conversion delay
-		bool pwm_too_small = pwm_ratio < 0.02f;
+		// Filter (EWMA) motor current sense ADC samples
 
-		// instant motor current = ( ADC - b ) / a
-		float const a = (float)(MAKE_SHORT(regs[REG_CAL_CURRENT_SENSE_A_L],regs[REG_CAL_CURRENT_SENSE_A_H]));
-		// init b value from EEPROM
-		if(b==0)
-		{
-			b = (float)(MAKE_SHORT(regs[REG_CAL_CURRENT_SENSE_B_L],regs[REG_CAL_CURRENT_SENSE_B_H]));
-		}
-
-		// There are two UPDATE EVENT per period
-		// ADC is triggered twice per period by PWM TIM4 (centered mode)
+		// Note : In center aligned mode, two periods of TIM4 are used for motor PWM generation
+		// TIM4 is 40KHz, motor PWM is 20KHz
+		// So ADC is triggered twice per motor PWM period by TIM4
 		// We will measure ON and OFF instant motor current
-		// when PWM is ON, TIMER COUNTER is 0
-		// when PWM is OFF, TIMER COUNTER is 99
 
-		// in DRIVE phase
-		// PWM is ON
-		if(__HAL_TIM_GET_COUNTER(&htim4) > 50)
+		// In FORWARD or REVERSE DRIVE phases, PWM is ON, counter decreases
+		if(__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim4))
 		{
-			if(pwm_too_small)
-			{
-				// We suppose that average current is very low ==> zero
-				present_current_ma_on = (1.0f - ALPHA_CURRENT_SENSE)*present_current_ma_on;
-			}
-			else
-			{
-				present_current_ma_on = (1.0f - ALPHA_CURRENT_SENSE)*present_current_ma_on + ALPHA_CURRENT_SENSE * (float)((int16_t)motor_current_input_adc-b)/a*1000.0f*pwm_sign*pwm_ratio;
-			}
+			// filter motor current
+			motor_current_input_adc = ALPHA_CURRENT_SENSE*(float)(ADC_DMA[0]) + (1.0f-ALPHA_CURRENT_SENSE)*motor_current_input_adc;
 		}
-		// in COAST phase
-		// PWM is OFF
+		// In BRAKE phase, PWM is OFF, counter increases
 		else
 		{
-			// self-calibrate ADC offset (b)
+			// self-calibrate ADC offset (b) when motor is stopped
 			if(setpoint_pwm==0.0f)
 			{
-				b = ALPHA_B * (float)motor_current_input_adc + (1.0f-ALPHA_B)*b;
-			}
-
-			if(pwm_too_small)
-			{
-				// We suppose that average current is very low ==> zero
-				present_current_ma_off = (1.0f - ALPHA_CURRENT_SENSE)*present_current_ma_off;
-			}
-			else
-			{
-				present_current_ma_off = (1.0f - ALPHA_CURRENT_SENSE)*present_current_ma_off + ALPHA_CURRENT_SENSE * (float)((int16_t)motor_current_input_adc-b)/a*1000.0f*pwm_sign*pwm_ratio_inv;
+				motor_current_input_adc_offset = ALPHA_CURRENT_SENSE_OFFSET*(float)(ADC_DMA[0]) + (1.0f-ALPHA_CURRENT_SENSE_OFFSET)*motor_current_input_adc_offset;
 			}
 		}
 
-		// restart adc conv trigger
+		// restart ADC
 		HAL_ADC_Start_DMA(&hadc1,(uint32_t*)ADC_DMA,3);
-
 	}
-
-//	//else if(hadc==&hadc2)
-//	{
-//		if(__HAL_TIM_GET_COUNTER(&htim4) < 50)
-//		{
-//			position_input_adc = ALPHA_POSITION * HAL_ADC_GetValue(&hadc2) + (1.0f-ALPHA_POSITION) * position_input_adc;
-//		}
-//	}
 }
 
 

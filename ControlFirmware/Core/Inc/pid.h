@@ -25,6 +25,18 @@ typedef struct{
 
 void pid_reset( pid_context_t * ctx );
 
+float pid_process_antiwindup_clamp_with_ff(
+		pid_context_t * ctx,
+		float error,
+		float kp,
+		float ki,
+		float kd,
+		float output_limit,
+		float alpha_derivative,
+		float feed_forward
+);
+
+
 float pid_process_antiwindup_clamp(
 		pid_context_t * ctx,
 		float error,
