@@ -536,5 +536,4 @@ class servo_protocol2:
 				self.rx_position = 0
 				return False
 
-# SEQUENCER #############################################################################################
 
