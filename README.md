@@ -1,3 +1,5 @@
+https://hackaday.io/project/176678-smarter-micro-servo-sms-mod
+
 # SMSMod
  Smarter Micro Servo (SMS) MOD
 
