@@ -153,14 +153,14 @@ extern "C" {
 #define REG_INV_ROTATION_SENSOR_VALUE		0		// 0: NORMAL 1: INV
 
 // MG92b
-#define REG_PID_POSITION_KP_VALUE			2000	// k 2000 (modes : 1)
-#define REG_PID_POSITION_KI_VALUE			10		// k 0..40 (modes : 1)
-#define REG_PID_POSITION_KD_VALUE			2000	// k 3600 (modes : 1)
-#define REG_PID_VELOCITY_KFF_VALUE			0		// k 0
-#define REG_PID_ACCELERATION_KFF_VALUE		0		// k 0
-#define REG_PID_CURRENT_KP_VALUE			500		// k 500 (modes : 1,3)
-#define REG_PID_CURRENT_KI_VALUE			1		// k   1 (modes : 1,3)
-#define REG_PID_CURRENT_KFF_VALUE			20		// k  20 (modes : 1,3)
+#define REG_PID_POSITION_KP_VALUE			2000	// k 2000 (modes : 1,2)
+#define REG_PID_POSITION_KI_VALUE			0		// k 0..40 (modes : 1,2)
+#define REG_PID_POSITION_KD_VALUE			3600	// k 3600 (modes : 1,2)
+#define REG_PID_VELOCITY_KFF_VALUE			10		// k 10 (modes : 2)
+#define REG_PID_ACCELERATION_KFF_VALUE		10		// k 10 (modes : 2)
+#define REG_PID_CURRENT_KP_VALUE			500		// k 500 (modes : 1,2,3)
+#define REG_PID_CURRENT_KI_VALUE			1		// k   1 (modes : 1,2,3)
+#define REG_PID_CURRENT_KFF_VALUE			20		// k  20 (modes : 1,2,3)
 
 // MG90s
 //#define REG_PID_POSITION_KP_VALUE			2000	// k 400 (0), 1400-2000 (1)
@@ -172,14 +172,14 @@ extern "C" {
 //#define REG_PID_CURRENT_KI_VALUE			1		// 30-50 > 1 (1,3)
 //#define REG_PID_CURRENT_KFF_VALUE			10		// 10 (1,3)
 
-#define REG_CAL_CURRENT_SENSE_A_L_VALUE		1920	// 1872 (theorique)
+#define REG_CAL_CURRENT_SENSE_A_L_VALUE		1920	// 1872 (theory)
 #define REG_CAL_CURRENT_SENSE_B_L_VALUE		1205
 
 // REGISTER CONTROL MODE VALUES //////////////////////////////////////////////////////
 
 #define REG_CONTROL_MODE_POSITION 0
 #define REG_CONTROL_MODE_POSITION_TORQUE 1
-#define REG_CONTROL_MODE_POSITION_PROFIL 2
+#define REG_CONTROL_MODE_VELOCITY_PROFIL_POSITION_TORQUE 2
 #define REG_CONTROL_MODE_CURRENT 3
 #define REG_CONTROL_MODE_PWM 4
 

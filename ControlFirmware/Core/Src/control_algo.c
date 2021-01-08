@@ -312,7 +312,7 @@ void APP_Control_Process()
 			break;
 
 
-		case REG_CONTROL_MODE_POSITION_PROFIL:
+		case REG_CONTROL_MODE_VELOCITY_PROFIL_POSITION_TORQUE:
 			if(entering_state)
 			{
 				entering_state = false;
@@ -329,82 +329,91 @@ void APP_Control_Process()
 				// set setpoint position at current position
 				setpoint_position_deg = present_position_deg;
 			}
-//			{
-//				// compute position setpoint from goal position and velocity limit using a PID position
-//				float const min_goal_position_deg = (float)(MAKE_SHORT(regs[REG_MIN_POSITION_DEG_L],regs[REG_MIN_POSITION_DEG_H]));
-//				float const max_goal_position_deg = (float)(MAKE_SHORT(regs[REG_MAX_POSITION_DEG_L],regs[REG_MAX_POSITION_DEG_H]));
-//				float goal_position_deg = 0.1f * (float)(MAKE_SHORT(regs[REG_GOAL_POSITION_DEG_L],regs[REG_GOAL_POSITION_DEG_H]));
-//				goal_position_deg = fconstrain(goal_position_deg,min_goal_position_deg,max_goal_position_deg);
-//				float const max_velocity_dps = (float)(MAKE_SHORT(regs[REG_GOAL_VELOCITY_DPS_L],regs[REG_GOAL_VELOCITY_DPS_H]));
-//				float const max_acceleration_dpss = (float)(MAKE_SHORT(regs[REG_MAX_ACCELERATION_DPSS_L],regs[REG_MAX_ACCELERATION_DPSS_H]));
-//
-//				// trapezoidal profile for setpoint position
-//
-//				// compute remaining distance between setpoint position to goal position
-//				float const remaining_distance_deg = goal_position_deg - setpoint_position_deg;
-//
-//				// compute maximun velocity to be able to stop at goal position
-//				float vmax = sqrtf( 2.0f * max_acceleration_dpss * fabsf(remaining_distance_deg) );
-//				// restore sign
-//				vmax = ( remaining_distance_deg>0.0f) ? vmax : -vmax;
-//				// limit maximum velocity, when far from stop
-//				vmax = fconstrain(vmax,-max_velocity_dps,max_velocity_dps);
-//				// compute distance between maximun velocity and current velocity
-//				float delta_v = vmax - setpoint_velocity_dps;
-//				// now compute new velocity according acceleration
-//				setpoint_velocity_dps += fconstrain(delta_v, (-max_acceleration_dpss/LOOP_FREQUENCY_HZ), (max_acceleration_dpss/LOOP_FREQUENCY_HZ));
-//				// now compute new position
-//				setpoint_position_deg += (setpoint_velocity_dps/LOOP_FREQUENCY_HZ);
-//				// now compute acceleration
-//				setpoint_acceleration_dpss = (setpoint_velocity_dps - last_setpoint_velocity_dps)*LOOP_FREQUENCY_HZ;
-//				last_setpoint_velocity_dps =  setpoint_velocity_dps;
-//				// compute errors
-//				float const error_position = setpoint_position_deg - present_position_deg;
-//				float const error_velocity = setpoint_velocity_dps - present_velocity_dps;
-//				// compute current setpoint from position setpoint using a PID position and velocity/acceleration feed forwards
-//				float const pid_pos_kp = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KP_L],regs[REG_PID_POSITION_KP_H]))/100.0f;
-//				float const pid_pos_ki = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KI_L],regs[REG_PID_POSITION_KI_H]))/100.0f;
-//				float const pid_pos_kd = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KD_L],regs[REG_PID_POSITION_KD_H]))/100.0f;
-//				float const pid_vel_kff = (float)(MAKE_SHORT(regs[REG_PID_VELOCITY_KFF_L],regs[REG_PID_VELOCITY_KFF_H]))/1000.0f;
-//				float const pid_acc_kff = (float)(MAKE_SHORT(regs[REG_PID_ACCELERATION_KFF_L],regs[REG_PID_ACCELERATION_KFF_H]))/100000.0f;
-//				float const velocity_feed_forward = pid_vel_kff * setpoint_velocity_dps;
-//				float const acceleration_feed_forward = pid_acc_kff * setpoint_acceleration_dpss;
-//				setpoint_current_ma =
-//						ALPHA_CURRENT_SETPOINT * (
-//								velocity_feed_forward +
-//								acceleration_feed_forward +
-//								pid_process_ex(
-//										&pid_position,
-//										error_position,
-//										error_velocity,
-//										pid_pos_kp,
-//										pid_pos_ki,
-//										pid_pos_kd,
-//										LIMIT_PID_POSITION_WINDUP
-//								)
-//						) +
-//						(1.0f-ALPHA_CURRENT_SETPOINT) * setpoint_current_ma;
-//			}
-//			// compute pwm setpoint from goal current using a PI
-//			{
-//				float const current_limit = (float)(MAKE_SHORT(regs[REG_GOAL_CURRENT_MA_L],regs[REG_GOAL_CURRENT_MA_H]));
-//				setpoint_current_ma = fconstrain(setpoint_current_ma,-current_limit,current_limit);
-//				float const error_current = setpoint_current_ma - present_current_ma_on;
-//				float const pid_current_kp = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KP_L],regs[REG_PID_CURRENT_KP_H]))/100.0f;
-//				float const pid_current_ki = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KI_L],regs[REG_PID_CURRENT_KI_H]))/100.0f;
-//				float const pid_current_kff = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KFF_L],regs[REG_PID_CURRENT_KFF_H]))/100.0f;
-//				setpoint_pwm = ALPHA_PWM_SETPOINT * ( pid_current_kff * setpoint_current_ma +	pid_process(&pid_current,error_current,pid_current_kp,pid_current_ki,0.0f,LIMIT_PID_CURRENT_WINDUP) ) + (1.0f-ALPHA_PWM_SETPOINT) * setpoint_pwm ;
-//				float const pwm_limit = (float)(MAKE_SHORT(regs[REG_GOAL_PWM_100_L],regs[REG_GOAL_PWM_100_H]));
-//				setpoint_pwm = fconstrain(setpoint_pwm,-pwm_limit,pwm_limit);
-//			}
-			setpoint_pwm = 0.0f;
+			{
+				// limit goal position
+				float const min_goal_position_deg = (float)(MAKE_SHORT(regs[REG_MIN_POSITION_DEG_L],regs[REG_MIN_POSITION_DEG_H]));
+				float const max_goal_position_deg = (float)(MAKE_SHORT(regs[REG_MAX_POSITION_DEG_L],regs[REG_MAX_POSITION_DEG_H]));
+				float goal_position_deg = 0.1f * (float)(MAKE_SHORT(regs[REG_GOAL_POSITION_DEG_L],regs[REG_GOAL_POSITION_DEG_H]));
+				goal_position_deg = fconstrain(goal_position_deg,min_goal_position_deg,max_goal_position_deg);
+				// compute position setpoint from goal position
+				float const max_velocity_dps = (float)(MAKE_SHORT(regs[REG_GOAL_VELOCITY_DPS_L],regs[REG_GOAL_VELOCITY_DPS_H]));
+				float const max_acceleration_dpss = (float)(MAKE_SHORT(regs[REG_MAX_ACCELERATION_DPSS_L],regs[REG_MAX_ACCELERATION_DPSS_H]));
+				// trapezoidal profile for setpoint position
+				// compute remaining distance between setpoint position to goal position
+				float const remaining_distance_deg = goal_position_deg - setpoint_position_deg;
+				// compute maximun velocity to be able to stop at goal position
+				float vmax = sqrtf( 2.0f * max_acceleration_dpss * fabsf(remaining_distance_deg) );
+				// restore sign
+				vmax = ( remaining_distance_deg>0.0f) ? vmax : -vmax;
+				// limit maximum velocity, when far from stop
+				vmax = fconstrain(vmax,-max_velocity_dps,max_velocity_dps);
+				// compute distance between maximun velocity and current velocity
+				float delta_v = vmax - setpoint_velocity_dps;
+				// now compute new velocity according acceleration
+				setpoint_velocity_dps += fconstrain(delta_v, (-max_acceleration_dpss/LOOP_FREQUENCY_HZ), (max_acceleration_dpss/LOOP_FREQUENCY_HZ));
+				// now compute new position
+				setpoint_position_deg += (setpoint_velocity_dps/LOOP_FREQUENCY_HZ);
+				// now compute acceleration
+				setpoint_acceleration_dpss = (setpoint_velocity_dps - last_setpoint_velocity_dps)*LOOP_FREQUENCY_HZ;
+				last_setpoint_velocity_dps =  setpoint_velocity_dps;
+				// compute current setpoint from position setpoint using a PID position and velocity/acceleration feed forwards
+				float const pid_vel_kff = (float)(MAKE_SHORT(regs[REG_PID_VELOCITY_KFF_L],regs[REG_PID_VELOCITY_KFF_H]))/1000.0f;
+				float const pid_acc_kff = (float)(MAKE_SHORT(regs[REG_PID_ACCELERATION_KFF_L],regs[REG_PID_ACCELERATION_KFF_H]))/100000.0f;
+				float const velocity_feed_forward = pid_vel_kff * setpoint_velocity_dps;
+				float const acceleration_feed_forward = pid_acc_kff * setpoint_acceleration_dpss;
+				// compute position error
+				float const error_position = setpoint_position_deg - present_position_deg;
+				// compute current setpoint from position error using a PID position
+				float const pid_pos_kp = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KP_L],regs[REG_PID_POSITION_KP_H]))/100.0f;
+				float const pid_pos_ki = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KI_L],regs[REG_PID_POSITION_KI_H]))/1000.0f;
+				float const pid_pos_kd = (float)(MAKE_SHORT(regs[REG_PID_POSITION_KD_L],regs[REG_PID_POSITION_KD_H]))/10.0f;
+				float const current_limit = (float)(MAKE_SHORT(regs[REG_GOAL_CURRENT_MA_L],regs[REG_GOAL_CURRENT_MA_H]));
+				setpoint_current_ma =
+						ALPHA_CURRENT_SETPOINT * (
+								pid_process_antiwindup_clamp_with_ff(
+										&pid_position,
+										error_position,
+										pid_pos_kp,
+										pid_pos_ki,
+										pid_pos_kd,
+										current_limit,
+										ALPHA_VELOCITY,
+										velocity_feed_forward+acceleration_feed_forward
+								)
+						) +
+						(1.0f-ALPHA_CURRENT_SETPOINT) * setpoint_current_ma;
+			}
+			{
+				// compute current error
+				float const error_current = setpoint_current_ma - present_motor_current_ma;
+				// compute pwm setpoint from current error using a PI
+				float const pid_current_kp = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KP_L],regs[REG_PID_CURRENT_KP_H]))/1000.0f;
+				float const pid_current_ki = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KI_L],regs[REG_PID_CURRENT_KI_H]))/100.0f;
+				float const pid_current_kff = (float)(MAKE_SHORT(regs[REG_PID_CURRENT_KFF_L],regs[REG_PID_CURRENT_KFF_H]))/100.0f;
+				float const pwm_limit = (float)(MAKE_SHORT(regs[REG_GOAL_PWM_100_L],regs[REG_GOAL_PWM_100_H]));
+				setpoint_pwm =
+						ALPHA_PWM_SETPOINT * (
+								pid_process_antiwindup_clamp_with_ff(
+										&pid_current,
+										error_current,
+										pid_current_kp,
+										pid_current_ki,
+										0.0f,
+										pwm_limit,
+										0.0f,
+										pid_current_kff * setpoint_current_ma
+								)
+							) +
+							(1.0f-ALPHA_PWM_SETPOINT) * setpoint_pwm ;
+			}
 			// mode change
-			if(regs[REG_CONTROL_MODE]!=REG_CONTROL_MODE_POSITION)
+			if(regs[REG_CONTROL_MODE]!=REG_CONTROL_MODE_VELOCITY_PROFIL_POSITION_TORQUE)
 			{
 				APP_Control_Reset();
 				current_control_mode = regs[REG_CONTROL_MODE];
 			}
 			break;
+
 		case REG_CONTROL_MODE_CURRENT:
 			if(entering_state)
 			{
@@ -455,6 +464,8 @@ void APP_Control_Process()
 				current_control_mode = regs[REG_CONTROL_MODE];
 			}
 			break;
+
+
 		case REG_CONTROL_MODE_PWM:
 			if(entering_state)
 			{
@@ -536,10 +547,10 @@ void APP_Control_Process()
 	regs[REG_SETPOINT_POSITION_DEG_L] = LOW_BYTE((uint16_t)(setpoint_position_deg*10.0f));
 	regs[REG_SETPOINT_POSITION_DEG_H] = HIGH_BYTE((uint16_t)(setpoint_position_deg*10.0f));
 
-	//regs[REG_SETPOINT_VELOCITY_DPS_L] = LOW_BYTE((int16_t)setpoint_velocity_dps);
-	//regs[REG_SETPOINT_VELOCITY_DPS_H] = HIGH_BYTE((int16_t)setpoint_velocity_dps);
-	regs[REG_SETPOINT_VELOCITY_DPS_L] = LOW_BYTE((int16_t)pid_position.err_integral);
-	regs[REG_SETPOINT_VELOCITY_DPS_H] = HIGH_BYTE((int16_t)pid_position.err_integral);
+	regs[REG_SETPOINT_VELOCITY_DPS_L] = LOW_BYTE((int16_t)setpoint_velocity_dps);
+	regs[REG_SETPOINT_VELOCITY_DPS_H] = HIGH_BYTE((int16_t)setpoint_velocity_dps);
+	//regs[REG_SETPOINT_VELOCITY_DPS_L] = LOW_BYTE((int16_t)pid_position.err_integral); // DEBUG
+	//regs[REG_SETPOINT_VELOCITY_DPS_H] = HIGH_BYTE((int16_t)pid_position.err_integral); // DEBUG
 
 	regs[REG_SETPOINT_CURRENT_MA_L] = LOW_BYTE((int16_t)setpoint_current_ma);
 	regs[REG_SETPOINT_CURRENT_MA_H] = HIGH_BYTE((int16_t)setpoint_current_ma);
