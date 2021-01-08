@@ -1,0 +1,5 @@
+control_algo.c:67:7:query_position_sensor	24	static
+control_algo.c:87:6:APP_Control_Reset	8	static
+control_algo.c:106:6:APP_Control_Init	8	static
+control_algo.c:131:6:APP_Control_Process	168	static
+control_algo.c:556:6:HAL_ADC_ConvCpltCallback	40	static

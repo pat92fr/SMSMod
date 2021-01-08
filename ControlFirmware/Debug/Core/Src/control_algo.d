@@ -1,4 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/control_algo.o: ../Core/Src/control_algo.c \
+ ../Core/Inc/control_algo.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h \
  ../Core/Inc/stm32g4xx_hal_conf.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_rcc.h \
@@ -33,11 +34,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/led.h ../Core/Inc/main.h ../Core/Inc/serial.h \
- ../Core/Inc/eeprom.h ../Core/Inc/control_table.h \
- ../Core/Inc/control_algo.h
+ ../Core/Inc/control_table.h ../Core/Inc/math_tool.h \
+ ../Core/Inc/binary_tool.h ../Core/Inc/pid.h
 
-../Core/Inc/main.h:
+../Core/Inc/control_algo.h:
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 
@@ -107,14 +107,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 
-../Core/Inc/led.h:
-
-../Core/Inc/main.h:
-
-../Core/Inc/serial.h:
-
-../Core/Inc/eeprom.h:
-
 ../Core/Inc/control_table.h:
 
-../Core/Inc/control_algo.h:
+../Core/Inc/math_tool.h:
+
+../Core/Inc/binary_tool.h:
+
+../Core/Inc/pid.h:
