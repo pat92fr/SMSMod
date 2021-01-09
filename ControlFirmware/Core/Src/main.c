@@ -27,6 +27,7 @@
 #include "eeprom.h"
 #include "control_table.h"
 #include "control_algo.h"
+#include "protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

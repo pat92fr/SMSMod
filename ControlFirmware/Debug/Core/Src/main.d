@@ -35,7 +35,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  ../Core/Inc/led.h ../Core/Inc/main.h ../Core/Inc/serial.h \
  ../Core/Inc/eeprom.h ../Core/Inc/control_table.h \
- ../Core/Inc/control_algo.h
+ ../Core/Inc/control_algo.h ../Core/Inc/protocol.h
 
 ../Core/Inc/main.h:
 
@@ -118,3 +118,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/control_table.h:
 
 ../Core/Inc/control_algo.h:
+
+../Core/Inc/protocol.h:
