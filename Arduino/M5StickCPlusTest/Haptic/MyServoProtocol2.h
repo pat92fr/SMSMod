@@ -67,7 +67,7 @@ public:
   
   MyServoProtocol2(uint32_t baud)
   {
-    MySerial.begin(baud, SERIAL_8N1,GPIO_PIN36,GPIO_PIN26); // 36=RX 26=TX
+    MySerial.begin(baud, SERIAL_8N1,GPIO_PIN36,GPIO_PIN26);
     rx_packet_position = 0;
     rx_packet_payload_length = 0;
     tx_packet_length = 0;
