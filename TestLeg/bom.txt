@@ -5,3 +5,4 @@
 1x rod M3 x 36mm (for linkage knee)
 2x 3-part thrust bearing 4x9x4mm (for knee)
 1x screw+bolt M3 x 25mm (for knee)
+1x M2 x 8 scree (fixing hip servo arm to femur)
