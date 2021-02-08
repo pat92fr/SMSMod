@@ -28,34 +28,34 @@ endif
 
 -include ../makefile.defs
 
-BUILD_ARTIFACT_NAME := STM32G431KBx
+BUILD_ARTIFACT_NAME := ControlFirmware
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME).$(BUILD_ARTIFACT_EXTENSION)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-STM32G431KBx.elf \
+ControlFirmware.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-STM32G431KBx.list \
+ControlFirmware.list \
 
 OBJCOPY_BIN += \
-STM32G431KBx.bin \
+ControlFirmware.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: STM32G431KBx.elf secondary-outputs
+main-build: ControlFirmware.elf secondary-outputs
 
 # Tool invocations
-STM32G431KBx.elf: $(OBJS) $(USER_OBJS) C:\GitHub\SMSMod\ControlFirmware\STM32G431KBTX_FLASH.ld
-	arm-none-eabi-gcc -o "STM32G431KBx.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\GitHub\SMSMod\ControlFirmware\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM32G431KBx.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+ControlFirmware.elf: $(OBJS) $(USER_OBJS) C:\GitHub\SMSMod\ControlFirmware\STM32G431KBTX_FLASH.ld
+	arm-none-eabi-gcc -o "ControlFirmware.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\GitHub\SMSMod\ControlFirmware\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ControlFirmware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -64,13 +64,13 @@ default.size.stdout: $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32G431KBx.list: $(EXECUTABLES)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "STM32G431KBx.list"
+ControlFirmware.list: $(EXECUTABLES)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "ControlFirmware.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32G431KBx.bin: $(EXECUTABLES)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "STM32G431KBx.bin"
+ControlFirmware.bin: $(EXECUTABLES)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "ControlFirmware.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 

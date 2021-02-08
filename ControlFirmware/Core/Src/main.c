@@ -463,7 +463,46 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE END USART2_Init 0 */
 
   /* USER CODE BEGIN USART2_Init 1 */
-
+	uint8_t baud_rate_from_eeprom = eeprom_base_address()[REG_BAUD_RATE];
+	if(
+			baud_rate_from_eeprom==1 || // 1Mb
+			baud_rate_from_eeprom==2 || // 750k
+			baud_rate_from_eeprom==3 || // 500k
+			baud_rate_from_eeprom==4 || // 250k
+			baud_rate_from_eeprom==5    // 115200
+			)
+	{
+		uint32_t const baud_table[] = { 0, 1000000, 750000, 500000, 250000, 115200	};
+		  huart2.Instance = USART2;
+		  huart2.Init.BaudRate = baud_table[baud_rate_from_eeprom];
+		  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+		  huart2.Init.StopBits = UART_STOPBITS_1;
+		  huart2.Init.Parity = UART_PARITY_NONE;
+		  huart2.Init.Mode = UART_MODE_TX_RX;
+		  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+		  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+		  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+		  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+		  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+		  if (HAL_UART_Init(&huart2) != HAL_OK)
+		  {
+		    Error_Handler();
+		  }
+		  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+		  {
+		    Error_Handler();
+		  }
+		  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+		  {
+		    Error_Handler();
+		  }
+		  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+		  {
+		    Error_Handler();
+		  }
+	}
+	else
+	{
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 500000;
@@ -493,7 +532,7 @@ static void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART2_Init 2 */
-
+	}
   /* USER CODE END USART2_Init 2 */
 
 }
